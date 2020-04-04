@@ -11,6 +11,10 @@ module.exports = {
     async create(request, response) {
         const { name, email, whatsapp, city, uf } = request.body;
 
+        if (!name && !email && !city && whatsapp && uf) {
+            return response.status(400).json({erro: 'Preenchimento obrigatório.'});
+        }
+
         const id = crypto.randomBytes(4).toString('HEX');
 
         await connection('ongs').insert({
@@ -25,3 +29,4 @@ module.exports = {
         return response.json({ id });
     }
 };
+
